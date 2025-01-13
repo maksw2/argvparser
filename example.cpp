@@ -3,20 +3,13 @@
 
 int main(int argc, char* argv[]) {
     CommandLine cmd(argc, argv);
-    
-    // Example usage
-    if (cmd.exists("-dev")) {
-        std::cout << "-dev exists" << std::endl;
+
+    if (cmd.exists("-flag")) {
+        std::cout << "Flag value: " << cmd.value("-flag") << std::endl;
     }
 
-    cmd.append("-newArg", "value");
-    cmd.remove("-newArg");
+    cmd.append("-newarg", "newvalue");
+    std::cout << "New argument value: " << cmd.value("-newarg") << std::endl;
 
-    if (cmd.exists("-test")) {
-        std::cout << "-test exists" << std::endl;
-        cmd.append("-test2");
-        std::cout << "Appended -test2" << std::endl;
-    }
-    
-    return 0;
+    cmd.remove("-newarg");
 }

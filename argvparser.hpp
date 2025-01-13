@@ -4,36 +4,47 @@
 
 #include <string>
 #include <map>
+#include <iostream>
 
 class CommandLine {
-private:
-    std::map<std::string, std::string> args;
 public:
     CommandLine(int argc, char* argv[]) {
+        // Parse the command line arguments into the map
         for (int i = 1; i < argc; ++i) {
             std::string arg = argv[i];
-            size_t pos = arg.find(' ');
-            if (pos != std::string::npos) {
-                args[arg.substr(0, pos)] = arg.substr(pos + 1);
-            }
-            else {
-                args[arg] = "";
+            if (arg[0] == '-') {
+                std::string value;
+                if (i + 1 < argc && argv[i + 1][0] != '-') {
+                    value = argv[++i]; // If next argument is not another flag, it's the value
+                }
+                arguments_[arg] = value;
             }
         }
     }
-    bool exists(const std::string& ask) {
-        return args.count(ask) > 0;
+
+    // Check if a command line argument exists
+    bool exists(const std::string& arg) const {
+        return arguments_.find(arg) != arguments_.end();
     }
-    bool append(const std::string& argument, const std::string& value = std::string()) {
-        if (argument.empty() || argument[0] != '-') {
-            return false;
-        }
-        args[argument] = value;
-        return true;
+
+    // Get the value of an argument (returns an empty string if not found)
+    std::string value(const std::string& arg) const {
+        auto it = arguments_.find(arg);
+        return (it != arguments_.end()) ? it->second : "";
     }
-    void remove(const std::string& argument) {
-        args.erase(argument);
+
+    // Append a new argument with its value
+    void append(const std::string& arg, const std::string& value = std::string()) {
+        arguments_[arg] = value;
     }
+
+    // Remove an argument
+    void remove(const std::string& arg) {
+        arguments_.erase(arg);
+    }
+
+private:
+    std::map<std::string, std::string> arguments_;
 };
 
 #endif
