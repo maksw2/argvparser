@@ -19,7 +19,8 @@ jobs:
       - name: Compile example.cpp
         shell: cmd
         run: |
-          cl /EHsc /W4 /Fe:example.exe example.cpp
+          cl example.cpp /c /EHsc /W4 /Zi /std:c++20 /nologo
+          link example.obj /OUT:example.exe /DEBUG /NOLOGO
 
       - name: Run example.exe with no arguments
         shell: cmd
@@ -43,7 +44,9 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y build-essential
 
       - name: Compile example.cpp
-        run: g++ -Wall -o example.out example.cpp
+        run: |
+          g++ example.cpp -Wall -std=c++20 -c
+          g++ example.o -o example.out
 
       - name: Run example.out with no arguments
         run: |
