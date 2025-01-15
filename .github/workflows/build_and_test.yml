@@ -21,10 +21,16 @@ jobs:
         run: |
           cl /EHsc /W4 /Fe:example.exe example.cpp
 
-      - name: Run example.exe
+      - name: Run example.exe with no arguments
         shell: cmd
         run: |
           example.exe
+        continue-on-error: false
+
+      - name: Run example.exe with arguments
+        shell: cmd
+        run: |
+          example.exe -flag 95
         continue-on-error: false
 
   ubuntu-build-run:
@@ -39,6 +45,12 @@ jobs:
       - name: Compile example.cpp
         run: g++ -Wall -o example.out example.cpp
 
-      - name: Run example.out
-        run: ./example.out
+      - name: Run example.out with no arguments
+        run: |
+          ./example.out
+        continue-on-error: false
+
+      - name: Run example.out with arguments
+        run: |
+          ./example.out -flag 95
         continue-on-error: false
