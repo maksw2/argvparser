@@ -1,0 +1,56 @@
+name: Build and Run Example
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  windows-build-run:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up MSVC
+        uses: ilammy/msvc-dev-cmd@v1.13.0
+      
+      - name: Compile example.cpp
+        shell: cmd
+        run: |
+          cl /EHsc /W4 /Fe:example.exe example.cpp
+
+      - name: Run example.exe with no arguments
+        shell: cmd
+        run: |
+          example.exe
+        continue-on-error: false
+
+      - name: Run example.exe with arguments
+        shell: cmd
+        run: |
+          example.exe -flag 95
+        continue-on-error: false
+
+  ubuntu-build-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install GCC
+        run: sudo apt-get update && sudo apt-get install -y build-essential
+
+      - name: Compile example.cpp
+        run: g++ -Wall -o example.out example.cpp
+
+      - name: Run example.out with no arguments
+        run: |
+          ./example.out
+        continue-on-error: false
+
+      - name: Run example.out with arguments
+        run: |
+          ./example.out -flag 95
+        continue-on-error: false
