@@ -4,7 +4,7 @@
 
 #include <string>
 #include <map>
-#include <iostream>
+#include <optional>
 
 class CommandLine {
 public:
@@ -27,10 +27,13 @@ public:
         return arguments_.find(arg) != arguments_.end();
     }
 
-    // Get the value of an argument (returns an empty string if not found)
-    std::string value(const std::string& arg) const {
+    // Get the value of an argument (returns std::nullopt if not found)
+    std::optional<std::string> value(const std::string& arg) const {
         auto it = arguments_.find(arg);
-        return (it != arguments_.end()) ? it->second : "";
+        if (it != arguments_.end()) {
+            return it->second;
+        }
+        return std::nullopt;
     }
 
     // Append a new argument with its value

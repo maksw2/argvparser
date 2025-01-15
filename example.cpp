@@ -5,11 +5,11 @@ int main(int argc, char* argv[]) {
     CommandLine cmd(argc, argv);
 
     if (cmd.exists("-flag")) {
-        std::cout << "Flag value: " << cmd.value("-flag") << std::endl;
+        std::cout << "Flag value: " << cmd.value("-flag").value() << std::endl;
     }
 
     cmd.append("-newarg", "newvalue");
-    std::cout << "New argument value: " << cmd.value("-newarg") << std::endl;
+    std::cout << "New argument value: " << cmd.value("-newarg").value() << std::endl;
 
     cmd.remove("-newarg");
 }
