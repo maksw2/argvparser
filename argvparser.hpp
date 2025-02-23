@@ -26,6 +26,12 @@ public:
     bool exists(const std::string& arg) const {
         return arguments_.find(arg) != arguments_.end();
     }
+	
+	// Check if an argument exists and has a non-empty value
+    bool exists_and_has_value(const std::string& arg) const {
+        auto it = arguments_.find(arg);
+        return it != arguments_.end() && !it->second.empty();
+    }
 
     // Get the value of an argument (returns std::nullopt if not found)
     std::optional<std::string> value(const std::string& arg) const {
@@ -45,6 +51,10 @@ public:
     void remove(const std::string& arg) {
         arguments_.erase(arg);
     }
+	
+	bool is_empty() const { 
+    return arguments_.size() == 1; 
+}
 
 private:
     std::map<std::string, std::string> arguments_;

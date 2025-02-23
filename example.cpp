@@ -4,7 +4,7 @@
 int main(int argc, char* argv[]) {
     CommandLine cmd(argc, argv);
 
-    if (cmd.exists("-flag")) {
+    if (cmd.exists_and_has_value("-flag")) {
         std::cout << "Flag value: " << cmd.value("-flag").value() << std::endl;
     }
 
